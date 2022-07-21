@@ -18,10 +18,10 @@ public class EmployeeService {
 
     // employee crud
     public Employe addEmployee(Employe employee) {
-        List<Employe> employeeList = empRepository.findEmployeByEmail(employee.getEmail());
-        if (employeeList.isEmpty()) {
+        /*List<Employe> employeeList = empRepository.findEmployeByEmail(employee.getEmail());
+        if (employeeList.isEmpty()) {*/
             return empRepository.save(employee);
-        } else return null;
+       /* } else return null;*/
 
     }
 

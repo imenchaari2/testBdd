@@ -6,7 +6,7 @@ Feature: Test CRUD methods in Sample Employee REST API testing
 
     Examples:
     |id | firstName | lastName          |email | cin | grade | phone | gotLeaveDays | recruitDay |
-    |12yy | mohammed  | dammak            | mohammed.dammak@beprime.com | 11112335| developer | 50222355 | 9 |2021-09-08 |
+    |12yy | mohammed  | dammak            | mohammed.dammak@beprime.com | 11112335| developer | 50222355 | 9 |12/20/2022 |
 
 #  Scenario: Update Employee record
 #    Given I Set PUT employee service api endpoint
