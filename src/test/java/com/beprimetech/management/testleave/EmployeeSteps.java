@@ -1,6 +1,8 @@
 package com.beprimetech.management.testleave;
 
+import com.beprimetech.management.testleave.models.Address;
 import com.beprimetech.management.testleave.models.Employe;
+import com.beprimetech.management.testleave.models.Information;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -31,9 +33,9 @@ public class EmployeeSteps {
     private ValidatableResponse validatableResponse;
     private String employeeId = "";
 
-    @ParameterType("\\d{2}\\.\\d{2}\\.\\d{4}")
+    @ParameterType("\\d{4}\\.\\d{2}\\.\\d{4}")
     public LocalDate mydate(String dateString) {
-        return LocalDate.parse(dateString, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        return LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
     @Given("I can create a new employee")
@@ -43,20 +45,26 @@ public class EmployeeSteps {
         log.info(allEmployee);
 
     }
-
-    @And("^I sending post to be created with post id (.*), firstName (.*), lastName (.*), email (.*), cin (.*), grade (.*), phone (.*), gotLeaveDays (.*) and recruitDay (.*)$")
-    public void i_sending_post(String id, String firstName, String lastName , String email , int cin ,  String grade , String phone ,int gotLeaveDays , String recruitDay) {
-
+    @And("^I sending post to be created with post id (.*), firstName (.*), lastName (.*), city (.*), postalCode (.*), street (.*), email (.*), cin (.*), grade (.*), phone (.*), gotLeaveDays (.*), recruitDay (.*), archivedDay (.*), password (.*) and enabled (.*)$")
+    public void i_sending_post(String id, String firstName, String lastName, String city, int postalCode, String street, String email , int cin ,  String grade , String phone ,int gotLeaveDays , String recruitDay, String archivedDay, String password, String enabled) {
         Employe newEmployee = new Employe();
         newEmployee.setId(id);
-        newEmployee.setFirstName(firstName);
-        newEmployee.setLastName(lastName);
-        newEmployee.setEmail(email);
-        newEmployee.setCin(cin);
-        newEmployee.setPhone(phone);
-        newEmployee.setGrade(grade);
-        newEmployee.setGotLeaveDays(gotLeaveDays);
-        newEmployee.setRecruitDay(mydate(recruitDay));
+        newEmployee.setInformation(Information.builder().build());
+        newEmployee.getInformation().setFirstName(firstName);
+        newEmployee.getInformation().setLastName(lastName);
+        newEmployee.getInformation().setAddress(Address.builder().build());
+        newEmployee.getInformation().getAddress().setCity(city);
+        newEmployee.getInformation().getAddress().setStreet(street);
+        newEmployee.getInformation().getAddress().setPostalCode(postalCode);
+        newEmployee.getInformation().setEmail(email);
+        newEmployee.getInformation().setCin(cin);
+        newEmployee.getInformation().setPhone(phone);
+        newEmployee.getInformation().setGrade(grade);
+        newEmployee.getInformation().setGotLeaveDays(gotLeaveDays);
+        newEmployee.getInformation().setRecruitDay(mydate(recruitDay));
+        newEmployee.getInformation().setRecruitDay(mydate(archivedDay));
+        newEmployee.getInformation().setPassword(password);
+        newEmployee.getInformation().setPassword(enabled);
         Employe employe = restTemplate.postForObject(url, newEmployee, Employe.class);
         assert employe != null;
         employeeId = employe.getId();
@@ -71,6 +79,8 @@ public class EmployeeSteps {
         log.info(myPost);
         assertNotNull(myPost);
     }
+
+
 
 }
 
