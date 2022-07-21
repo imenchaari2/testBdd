@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
@@ -38,6 +39,11 @@ public class EmployeeSteps {
         return LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
+    @ParameterType("(?:[^,]*)(?:,\\s?[^,]*)*")
+    public List<String> listOfStrings(String arg){
+        return Arrays.asList(arg.split(",\\s?"));
+    }
+
     @Given("I can create a new employee")
     public void i_can_create_a_new_post() {
         String urlFind = postUrl + ":" + port + "/api/employee/all";
@@ -45,8 +51,8 @@ public class EmployeeSteps {
         log.info(allEmployee);
 
     }
-    @And("^I sending post to be created with post id (.*), firstName (.*), lastName (.*), city (.*), postalCode (.*), street (.*), email (.*), cin (.*), grade (.*), phone (.*), gotLeaveDays (.*), recruitDay (.*), archivedDay (.*), password (.*) and enabled (.*)$")
-    public void i_sending_post(String id, String firstName, String lastName, String city, int postalCode, String street, String email , int cin ,  String grade , String phone ,int gotLeaveDays , String recruitDay, String archivedDay, String password, String enabled) {
+    @And("^I sending post to be created with post id (.*), firstName (.*), lastName (.*), city (.*), postalCode (.*), street (.*), email (.*), cin (.*), grade (.*), phone (.*), gotLeaveDays (.*), recruitDay (.*), archivedDay (.*), password (.*), enabled (.*) and gotLeaveDaysForCurrentMonth (.*)$")
+    public void i_sending_post(String id, String firstName, String lastName, String city, int postalCode, String street, String email , int cin , String grade , String phone , int gotLeaveDays , String recruitDay, String archivedDay, String password, String enabled, String gotLeaveDaysForCurrentMonth) {
         Employe newEmployee = new Employe();
         newEmployee.setId(id);
         newEmployee.setInformation(Information.builder().build());
@@ -65,6 +71,7 @@ public class EmployeeSteps {
         newEmployee.getInformation().setRecruitDay(mydate(archivedDay));
         newEmployee.getInformation().setPassword(password);
         newEmployee.getInformation().setPassword(enabled);
+        newEmployee.getInformation().setGotLeaveDaysForCurrentMonth(listOfStrings(gotLeaveDaysForCurrentMonth));
         Employe employe = restTemplate.postForObject(url, newEmployee, Employe.class);
         assert employe != null;
         employeeId = employe.getId();

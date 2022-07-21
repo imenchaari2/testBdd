@@ -30,6 +30,7 @@ public class Information {
     private LocalDate archivedDay;
     private String password;
     private boolean enabled;
+    private List<String> gotLeaveDaysForCurrentMonth = Lists.newArrayList();
 //    private List<Integer> gotLeaveDaysForCurrentMonth = Lists.newArrayList();
 
 }

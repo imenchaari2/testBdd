@@ -2,12 +2,12 @@ Feature: Test CRUD methods in Sample Employee REST API testing
   @GetUserDetails
   Scenario Outline: As an admin I want to create a new employee.
     Given I can create a new employee
-    And I sending post to be created with post id <id>, firstName <firstName>, lastName <lastName>, city <city>, postalCode <postalCode>, street <street>, email <email>, cin <cin>, grade <grade>, phone <phone>, gotLeaveDays <gotLeaveDays>, recruitDay <recruitDay>, archivedDay <archivedDay>, password <password> and enabled <enabled>
+    And I sending post to be created with post id <id>, firstName <firstName>, lastName <lastName>, city <city>, postalCode <postalCode>, street <street>, email <email>, cin <cin>, grade <grade>, phone <phone>, gotLeaveDays <gotLeaveDays>, recruitDay <recruitDay>, archivedDay <archivedDay>, password <password>, enabled <enabled> and gotLeaveDaysForCurrentMonth <gotLeaveDaysForCurrentMonth>
     Then I should be able to see my newly created employee
 
     Examples:
-      |id | firstName | lastName |email | cin | grade | phone | gotLeaveDays | recruitDay |city|street|postalCode|archivedDay|password|enabled|
-      |12yy | mohammed  | dammak | mohammed.dammak@beprime.com | 11112335| developer | 50222355 | 9 |2021-09-08 |sfax|rte tunis|3042|2020-08-05|123456789|false|
+      |id | firstName | lastName |email | cin | grade | phone | gotLeaveDays | recruitDay |city|street|postalCode|archivedDay|password|enabled|gotLeaveDaysForCurrentMonth|
+      |12yy | mohammed  | dammak | mohammed.dammak@beprime.com | 11112335| developer | 50222355 | 9 |2021-09-08 |sfax|rte tunis|3042|2020-08-05|123456789|false|1,3,5,2|
 
 
 #  Scenario: Update Employee record
