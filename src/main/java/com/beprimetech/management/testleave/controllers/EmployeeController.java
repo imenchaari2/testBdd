@@ -21,11 +21,11 @@ public class EmployeeController {
     }
 
 
-//    @GetMapping("/all")
-//    public ResponseEntity<List<Employee>> getAllEmployees() {
-//        List<Employee> employees = empService.findAllEmployees();
-//        return new ResponseEntity<>(employees, HttpStatus.OK);
-//    }
+    @GetMapping("/all")
+    public ResponseEntity<List<Employe>> getAllEmployees() {
+        List<Employe> employees = empService.findAllEmployees();
+        return new ResponseEntity<>(employees, HttpStatus.OK);
+    }
 //
 //    @GetMapping("/archived")
 //    public ResponseEntity<List<Employee>> getAllArchivedEmployees() {

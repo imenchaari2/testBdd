@@ -20,7 +20,6 @@ public class Employe {
     private String id;
     private String firstName ;
     private String lastName;
-    private String fullName;
     private int cin;
     private String grade;
     private String phone;

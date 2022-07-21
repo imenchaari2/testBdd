@@ -2,6 +2,7 @@ package com.beprimetech.management.testleave.services;
 
 import com.beprimetech.management.testleave.models.Employe;
 import com.beprimetech.management.testleave.repository.EmployeeRepository;
+import org.assertj.core.util.Lists;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,11 +25,9 @@ public class EmployeeService {
 
     }
 
-//    public List<Employee> findAllEmployees() {
-//        List<Employee> employees = Lists.newArrayList();
-//        employees.addAll(empRepository.findEmployeesByIsArchived(false));
-//        return employees;
-//    }
+    public List<Employe> findAllEmployees() {
+        return Lists.newArrayList();
+    }
 //
 //    public List<Employee> findAllArchivedEmployees() {
 //        List<Employee> employees = Lists.newArrayList();
