@@ -8,21 +8,21 @@ Feature: Test CRUD methods in Sample Employee REST API testing
     |id | firstName | lastName          |email | cin | grade | phone | gotLeaveDays | recruitDay |
     |12yy | mohammed  | dammak            | mohammed.dammak@beprime.com | 11112335| developer | 50222355 | 9 |12/20/2022 |
 
-#  Scenario: Update Employee record
-#    Given I Set PUT employee service api endpoint
-#    When I Set update request HEADER
-#    And Send a PUT HTTP request
-#    Then I receive valid http Response code 200
-#
-#  Scenario: Get Employee record
-#    Given I Set GET employee service api endpoint
-#    When I Set request HEADER
-#    And Send a GET HTTP request
-#
-#    Then I receive valid http Response code 200
-#
-#  Scenario: DELETE Employee record
-#    Given I Set DELETE employee service api endpoint
-#    When I Set DELETE request HEADER
-#    Then I receive valid http Response code 200
-#
+
+  Scenario: GET collection of employees
+    Given I perform GET operation for "/all"
+    Then The employees are listed
+
+  Scenario: Verify DELETE operation after POST
+    Given I ensure to Perform POST operation with body as
+      |id | firstName | lastName          |email | cin | grade | phone | gotLeaveDays | recruitDay |
+      |12tt | amin  | dammak            | amin.dammak@beprime.com | 11112335| developer | 50222355 | 9 |12/20/2022 |
+    Then I should be able to see my newly created employee to ensure my post operation for id "12tt"
+
+    And  I Perform DELETE operation for "/delete/{id}"
+      | id |
+      | 12tt      |
+    And I perform GET operation with path parameter for "/find/{id}"
+      | id |
+      | 12tt     |
+    And I should not see the body with email as "amin.dammak@beprime.com"

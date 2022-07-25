@@ -51,11 +51,11 @@ public class EmployeeController {
         return new ResponseEntity<>(updateEmployee, HttpStatus.OK);
     }
 
-//    @DeleteMapping("/delete/{id}")
-//    public ResponseEntity<?> deleteEmployee(@PathVariable("id") String id) {
-//        empService.deleteEmployee(id);
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteEmployee(@PathVariable("id") String id) {
+        empService.deleteEmployee(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 //
 //    @DeleteMapping("/archive/{id}")
 //    public ResponseEntity<?> archiveEmployee(@PathVariable("id") String id) {

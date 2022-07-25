@@ -1,12 +1,20 @@
 package com.beprimetech.management.testleave;
 
 import com.beprimetech.management.testleave.models.Employe;
+import io.cucumber.datatable.DataTable;
 import io.cucumber.java.ParameterType;
+import io.cucumber.java.Scenario;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import io.restassured.response.ValidatableResponse;
+import io.cucumber.java.en.When;
+import io.restassured.RestAssured;
+import io.restassured.builder.ResponseSpecBuilder;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+import io.restassured.specification.ResponseSpecification;
 import lombok.extern.log4j.Log4j2;
+import org.hamcrest.core.IsNot;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -14,10 +22,15 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import static io.restassured.RestAssured.given;
+import static net.bytebuddy.matcher.ElementMatchers.is;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @Log4j2
 @RunWith(SpringRunner.class)
@@ -25,11 +38,19 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class EmployeeSteps {
     private final int port = 8085;
+    private Scenario scenario;
+    private Response response;
     private final RestTemplate restTemplate = new RestTemplate();
     private final String postUrl = "http://localhost";
-    String url = postUrl + ":" + port + "/api/employee/add";
-    private ValidatableResponse validatableResponse;
     private String employeeId = "";
+
+
+    public static ResponseSpecification status200Ok() {
+        return new ResponseSpecBuilder()
+                .expectContentType("application/json")
+                .expectStatusCode(200)
+                .build();
+    }
 
     @ParameterType("\\d{2}\\.\\d{2}\\.\\d{4}")
     public LocalDate mydate(String dateString) {
@@ -45,19 +66,19 @@ public class EmployeeSteps {
     }
 
     @And("^I sending post to be created with post id (.*), firstName (.*), lastName (.*), email (.*), cin (.*), grade (.*), phone (.*), gotLeaveDays (.*) and recruitDay (.*)$")
-    public void i_sending_post(String id, String firstName, String lastName , String email , int cin ,  String grade , String phone ,int gotLeaveDays , String recruitDay) {
+    public void i_sending_post(String id, String firstName, String lastName, String email, int cin, String grade, String phone, int gotLeaveDays, String recruitDay) {
 
         Employe newEmployee = new Employe();
         newEmployee.setId(id);
         newEmployee.setFirstName(firstName);
         newEmployee.setLastName(lastName);
         newEmployee.setEmail(email);
-        newEmployee.setCin(cin);
+//        newEmployee.setCin(cin);
         newEmployee.setPhone(phone);
         newEmployee.setGrade(grade);
-        newEmployee.setGotLeaveDays(gotLeaveDays);
-        newEmployee.setRecruitDay(mydate(recruitDay));
-        Employe employe = restTemplate.postForObject(url, newEmployee, Employe.class);
+//        newEmployee.setGotLeaveDays(gotLeaveDays);
+//        newEmployee.setRecruitDay(mydate(recruitDay));
+        Employe employe = restTemplate.postForObject(postUrl + ":" + port + "/api/employee/add", newEmployee, Employe.class);
         assert employe != null;
         employeeId = employe.getId();
         log.info(employe);
@@ -67,11 +88,94 @@ public class EmployeeSteps {
     @Then("I should be able to see my newly created employee")
     public void i_should_see_my_newly_created_post() {
         String url = postUrl + ":" + port + "/api/employee/find/" + employeeId;
-        Employe myPost = restTemplate.getForObject(url, Employe.class);
-        log.info(myPost);
-        assertNotNull(myPost);
+        Employe employee = restTemplate.getForObject(url, Employe.class);
+        log.info(employee);
+        assertNotNull(employee);
     }
 
+// get step def req spec
+
+    //    @Given("There are employees")
+//    public void thereAreEmployees() {
+//        requestSpecification = RestAssured.given();
+//    }
+//
+//    @When("I fetch all employees")
+//    public void iFetchTheEmployees() {
+//        response = requestSpecification.get(postUrl + ":" + port + "/api/employee/all")
+//                .then().assertThat().spec(status200Ok()).extract().response();
+//    }
+//
+//    @Then("The employees are listed")
+//    public void theEmployeesAreListed() {
+//        System.out.println("Response Body is =>  " + response.asString());
+//    }
+
+    // get with test assured
+    @Given("I perform GET operation for {string}")
+    public void iPerformGETOperationFor(String url) throws Throwable {
+        response = (Response) RestAssuredExtension.GetOps(url);
+
+    }
+
+    @Then("The employees are listed")
+    public void theEmployeesAreListed() {
+        System.out.println(response.getBody().print());
+    }
+
+// post and get by id and delete with test assured
+    @Given("^I ensure to Perform POST operation with body as$")
+    public void iEnsureToPerformPOSTOperationForWithBodyAs(DataTable table) throws Throwable {
+        var data = table.asLists();
+
+        Map<String, String> body = new HashMap<>();
+        body.put("id", data.get(1).get(0));
+        body.put("firstName", data.get(1).get(1));
+        body.put("lastName", data.get(1).get(2));
+        body.put("email", data.get(1).get(3));
+        body.put("cin", data.get(1).get(4));
+        body.put("grade", data.get(1).get(5));
+        body.put("phone", data.get(1).get(6));
+        body.put("gotLeaveDays", data.get(1).get(7));
+        body.put("recruitDay", data.get(1).get(8));
+
+        //Perform post operation
+        RestAssuredExtension.PostOpsWithBody(postUrl + ":" + port + "/api/employee/add", body);
+    }
+    @Then("I should be able to see my newly created employee to ensure my post operation for id {string}")
+    public void i_should_see_my_newly_created_employee(String employeeId) {
+        String url = postUrl + ":" + port + "/api/employee/find/"+employeeId;
+        RestAssuredExtension.GetOps(url);
+
+    }
+
+    @And("I Perform DELETE operation for {string}")
+    public void iPerformDELETEOperationFor(String url, DataTable table) throws Throwable {
+        var data = table.asLists();
+
+        Map<String, String> pathParams = new HashMap<>();
+        pathParams.put("id", data.get(1).get(0));
+
+        //Perform Delete operation
+        RestAssuredExtension.DeleteOpsWithPathParams(url, pathParams);
+
+    }
+
+    @And("I perform GET operation with path parameter for {string}")
+    public void iPerformGETOperationWithPathParameterFor(String url, DataTable table) throws Throwable {
+        var data = table.asLists();
+
+        Map<String, String> pathParams = new HashMap<>();
+        pathParams.put("id", data.get(1).get(0));
+
+        response = (Response) RestAssuredExtension.GetWithPathParams(url, pathParams);
+    }
+
+    @Then("^I should not see the body with email as \"([^\"]*)\"$")
+    public void iShouldNotSeeTheBodyWithTitleAs(String email) throws Throwable {
+        assertThat(response.getBody().jsonPath().get("email"), IsNot.not(email));
+    }
+
+
+
 }
-
-

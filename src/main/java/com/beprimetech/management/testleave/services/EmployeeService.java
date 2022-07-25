@@ -46,10 +46,10 @@ public class EmployeeService {
                 () -> new UserNotFoundException("user by id" + id + "not found"));
     }
 
-//    public void deleteEmployee(String id) {
-//        Employee employee = this.findEmployeeById(id);
-//        empRepository.delete(employee);
-//    }
+    public void deleteEmployee(String id) {
+        Employe employee = this.findEmployeeById(id);
+        empRepository.delete(employee);
+    }
 //
 //    public void archiveEmployee(String id) {
 //        Employee employee = this.findEmployeeById(id);

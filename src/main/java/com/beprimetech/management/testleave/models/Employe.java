@@ -20,11 +20,11 @@ public class Employe {
     private String id;
     private String firstName ;
     private String lastName;
-    private int cin;
+    private String cin;
     private String grade;
     private String phone;
     private String email;
-    private int gotLeaveDays;
-    @JsonFormat(locale = "MM/DD/YYYY")
-    private LocalDate recruitDay;
+    private String gotLeaveDays;
+//    @JsonFormat(locale = "MM/DD/YYYY")
+    private String recruitDay;
 }
