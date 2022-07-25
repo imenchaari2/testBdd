@@ -59,7 +59,7 @@ public class RestAssuredExtension {
         return null;
     }
 
-    public static ResponseOptions<Response> PUTOpsWithBody(String url, Map<String,String> body) {
+    public static ResponseOptions<Response> PUTOpsWithBody(String url, Map<String,Object> body) {
         Request.body(body);
         System.out.println("request put ========>" + Request.put(url).getStatusCode());
         System.out.println("request put ========>" + Request.put(url).getBody().print());
@@ -91,7 +91,7 @@ public class RestAssuredExtension {
         return Request.get(url);
     }
 
-    public static void PostOpsWithBody(String url, Map<String, String> body)  {
+    public static void PostOpsWithBody(String url, Map<String, Object> body)  {
         Request.body(body);
         Request.post(url);
         assertThat(Request.post(url).getStatusCode(), equalTo(201));

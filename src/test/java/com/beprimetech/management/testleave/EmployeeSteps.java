@@ -1,17 +1,13 @@
 package com.beprimetech.management.testleave;
 
-import com.beprimetech.management.testleave.models.Employe;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.ParameterType;
 import io.cucumber.java.Scenario;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
-import io.restassured.RestAssured;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import lombok.extern.log4j.Log4j2;
 import org.hamcrest.core.IsNot;
@@ -23,7 +19,6 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
@@ -126,16 +121,24 @@ public class EmployeeSteps {
     @Given("^I ensure to Perform POST operation with body as$")
     public void iEnsureToPerformPOSTOperationForWithBodyAs(DataTable table) throws Throwable {
         var data = table.asLists();
-        Map<String, String> body = new HashMap<>();
+        Map<String, Object> informationBody = new HashMap<>();
+        Map<String, String> addressBody = new HashMap<>();
+        Map<String, Object> body = new HashMap<>();
         body.put("id", data.get(1).get(0));
-        body.put("firstName", data.get(1).get(1));
-        body.put("lastName", data.get(1).get(2));
-        body.put("email", data.get(1).get(3));
-        body.put("cin", data.get(1).get(4));
-        body.put("grade", data.get(1).get(5));
-        body.put("phone", data.get(1).get(6));
-        body.put("gotLeaveDays", data.get(1).get(7));
-        body.put("recruitDay", (data.get(1).get(8)));
+        informationBody.put("firstName", data.get(1).get(1));
+        informationBody.put("lastName", data.get(1).get(2));
+        informationBody.put("email", data.get(1).get(3));
+        informationBody.put("cin", data.get(1).get(4));
+        informationBody.put("grade", data.get(1).get(5));
+        informationBody.put("phone", data.get(1).get(6));
+        informationBody.put("gotLeaveDays", data.get(1).get(7));
+        informationBody.put("recruitDay", (data.get(1).get(8)));
+        addressBody.put("city",(data.get(1).get(9)));
+        addressBody.put("street",(data.get(1).get(10)));
+        addressBody.put("postalCode",(data.get(1).get(11)));
+        body.put("information", informationBody);
+        informationBody.put("address", addressBody);
+
 
         //Perform post operation
         RestAssuredExtension.PostOpsWithBody(postUrl + ":" + port + "/api/employee/add", body);
@@ -176,17 +179,23 @@ public class EmployeeSteps {
     @And("^I Perform PUT operation for \"([^\"]*)\"$")
     public void iPerformPUTOperationFor(String url, DataTable table) throws Throwable {
         var data = table.asLists();
-
-        Map<String, String> body = new HashMap<>();
+        Map<String, Object> informationBody = new HashMap<>();
+        Map<String, String> addressBody = new HashMap<>();
+        Map<String, Object> body = new HashMap<>();
         body.put("id", data.get(1).get(0));
-        body.put("firstName", data.get(1).get(1));
-        body.put("lastName", data.get(1).get(2));
-        body.put("email", data.get(1).get(3));
-        body.put("cin", data.get(1).get(4));
-        body.put("grade", data.get(1).get(5));
-        body.put("phone", data.get(1).get(6));
-        body.put("gotLeaveDays", data.get(1).get(7));
-        body.put("recruitDay", (data.get(1).get(8)));
+        informationBody.put("firstName", data.get(1).get(1));
+        informationBody.put("lastName", data.get(1).get(2));
+        informationBody.put("email", data.get(1).get(3));
+        informationBody.put("cin", data.get(1).get(4));
+        informationBody.put("grade", data.get(1).get(5));
+        informationBody.put("phone", data.get(1).get(6));
+        informationBody.put("gotLeaveDays", data.get(1).get(7));
+        informationBody.put("recruitDay", (data.get(1).get(8)));
+        addressBody.put("city",(data.get(1).get(9)));
+        addressBody.put("street",(data.get(1).get(10)));
+        addressBody.put("postalCode",(data.get(1).get(11)));
+        body.put("information", informationBody);
+        informationBody.put("address", addressBody);
 
         //Perform post operation
         RestAssuredExtension.PUTOpsWithBody(url, body);
@@ -195,6 +204,7 @@ public class EmployeeSteps {
 
     @Then("^I should see the body with email as \"([^\"]*)\"$")
     public void iShouldSeeTheBodyWithEmailAs(String email) throws Throwable {
-        assertThat(response.getBody().jsonPath().get("email"), equalTo(email));
+        System.out.println(response.getBody().jsonPath().get("information.phone").equals(email));
+        assertThat(response.getBody().jsonPath().get("information.email"), equalTo(email));
     }
 }

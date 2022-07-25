@@ -15,11 +15,11 @@ Feature: Test CRUD methods in Sample Employee REST API testing
 
   Scenario: Verify PUT operation after POST
     Given I ensure to Perform POST operation with body as
-      | id   | firstName | lastName | email                   | cin      | grade     | phone    | gotLeaveDays | recruitDay |
-      | abcd| amin      | dammak   | amin.dammak@beprime.com | 11112335 | developer | 50222355 | 9            | 2022-09-12 |
+      | id   | firstName | lastName | email                   | cin      | grade     | phone    | gotLeaveDays | recruitDay |city|street|postalCode|
+      | abcd| amin      | dammak   | amin.dammak@beprime.com | 11112335 | developer | 50222355 | 9            | 2022-09-12 |sfax|rte tunis|3042|
     And  I Perform PUT operation for "/update"
-      | id   | firstName | lastName | email                   | cin      | grade     | phone    | gotLeaveDays | recruitDay |
-      | abcd| nessrine      | aloulou   | nessrine.aloulou@beprime.com | 11112335 | developer | 50222355 | 9            | 2022-09-12 |
+      | id   | firstName | lastName | email                   | cin      | grade     | phone    | gotLeaveDays | recruitDay |city|street|postalCode|
+      | abcd| nessrine      | aloulou   | nessrine.aloulou@beprime.com | 11112335 | developer | 50222355 | 9            | 2022-09-12 |tunis|rte tunis|3042|
     And I perform GET operation with path parameter for "/find/{id}"
       | id   |
       | abcd |
@@ -27,8 +27,8 @@ Feature: Test CRUD methods in Sample Employee REST API testing
 
   Scenario: Verify DELETE operation after POST
     Given I ensure to Perform POST operation with body as
-      | id   | firstName | lastName | email                   | cin      | grade     | phone    | gotLeaveDays | recruitDay |
-      | 12tt | amin      | dammak   | amin.dammak@beprime.com | 11112335 | developer | 50222355 | 9            | 2022-09-12 |
+      | id   | firstName | lastName | email                   | cin      | grade     | phone    | gotLeaveDays | recruitDay |city|street|postalCode|
+      | 12tt | amin      | dammak   | amin.dammak@beprime.com | 11112335 | developer | 50222355 | 9            | 2022-09-12 |sfax|rte tunis|3042|
     Then I should be able to see my newly created employee to ensure my post operation for id "12tt"
 
     And  I Perform DELETE operation for "/delete/{id}"

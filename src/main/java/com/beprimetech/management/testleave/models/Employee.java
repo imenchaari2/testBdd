@@ -15,16 +15,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Document(collection = "EmployeeDb")
 @Builder(toBuilder = true)
-public class Employe {
+public class Employee {
     @Id
     private String id;
-    private String firstName ;
-    private String lastName;
-    private int cin;
-    private String grade;
-    private String phone;
-    private String email;
-    private int gotLeaveDays;
-    @JsonFormat(locale = "MM/DD/YYYY")
-    private LocalDate recruitDay;
+    Information information ;
 }

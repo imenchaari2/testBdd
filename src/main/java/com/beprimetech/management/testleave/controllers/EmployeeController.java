@@ -1,6 +1,6 @@
 package com.beprimetech.management.testleave.controllers;
 
-import com.beprimetech.management.testleave.models.Employe;
+import com.beprimetech.management.testleave.models.Employee;
 import com.beprimetech.management.testleave.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,8 +22,8 @@ public class EmployeeController {
 
 
     @GetMapping("/all")
-    public ResponseEntity<List<Employe>> getAllEmployees() {
-        List<Employe> employees = empService.findAllEmployees();
+    public ResponseEntity<List<Employee>> getAllEmployees() {
+        List<Employee> employees = empService.findAllEmployees();
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 //
@@ -34,20 +34,20 @@ public class EmployeeController {
 //    }
 
     @GetMapping("/find/{id}")
-    public ResponseEntity<Employe> getEmployeeById(@PathVariable("id") String id) {
-        Employe employee = empService.findEmployeeById(id);
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") String id) {
+        Employee employee = empService.findEmployeeById(id);
         return new ResponseEntity<>(employee, HttpStatus.OK);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Employe> addEmployee(@RequestBody Employe employee) {
-        Employe newEmployee = empService.addEmployee(employee);
+    public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
+        Employee newEmployee = empService.addEmployee(employee);
         return new ResponseEntity<>(newEmployee, HttpStatus.CREATED);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Employe> updateEmployee(@RequestBody Employe employee) {
-        Employe updateEmployee = empService.updateEmployee(employee);
+    public ResponseEntity<Employee> updateEmployee(@RequestBody Employee employee) {
+        Employee updateEmployee = empService.updateEmployee(employee);
         return new ResponseEntity<>(updateEmployee, HttpStatus.OK);
     }
 

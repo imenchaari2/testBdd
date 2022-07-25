@@ -1,6 +1,6 @@
 package com.beprimetech.management.testleave.services;
 
-import com.beprimetech.management.testleave.models.Employe;
+import com.beprimetech.management.testleave.models.Employee;
 import com.beprimetech.management.testleave.repository.EmployeeRepository;
 import org.assertj.core.util.Lists;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public class EmployeeService {
     }
 
     // employee crud
-    public Employe addEmployee(Employe employee) {
+    public Employee addEmployee(Employee employee) {
         /*List<Employe> employeeList = empRepository.findEmployeByEmail(employee.getEmail());
         if (employeeList.isEmpty()) {*/
             return empRepository.save(employee);
@@ -25,7 +25,7 @@ public class EmployeeService {
 
     }
 
-    public List<Employe> findAllEmployees() {
+    public List<Employee> findAllEmployees() {
         return Lists.newArrayList();
     }
 //
@@ -35,19 +35,19 @@ public class EmployeeService {
 //        return employees;
 //    }
 
-    public Employe updateEmployee(Employe employee) {
-        Employe employee1 = this.findEmployeeById(employee.getId());
+    public Employee updateEmployee(Employee employee) {
+        Employee employee1 = this.findEmployeeById(employee.getId());
         employee1 = employee;
         return empRepository.save(employee1);
     }
 
-    public Employe findEmployeeById(String id) {
+    public Employee findEmployeeById(String id) {
         return empRepository.findEmployeById(id).orElseThrow(
                 () -> new UserNotFoundException("user by id" + id + "not found"));
     }
 
     public void deleteEmployee(String id) {
-        Employe employee = this.findEmployeeById(id);
+        Employee employee = this.findEmployeeById(id);
         empRepository.delete(employee);
     }
 //
