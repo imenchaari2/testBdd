@@ -13,16 +13,28 @@ Feature: Test CRUD methods in Sample Employee REST API testing
     Given I perform GET operation for "/all"
     Then The employees are listed
 
+  Scenario: Verify PUT operation after POST
+    Given I ensure to Perform POST operation with body as
+      | id   | firstName | lastName | email                   | cin      | grade     | phone    | gotLeaveDays | recruitDay |
+      | abcd| amin      | dammak   | amin.dammak@beprime.com | 11112335 | developer | 50222355 | 9            | 2022-09-12 |
+    And  I Perform PUT operation for "/update"
+      | id   | firstName | lastName | email                   | cin      | grade     | phone    | gotLeaveDays | recruitDay |
+      | abcd| nessrine      | aloulou   | nessrine.aloulou@beprime.com | 11112335 | developer | 50222355 | 9            | 2022-09-12 |
+    And I perform GET operation with path parameter for "/find/{id}"
+      | id   |
+      | abcd |
+    Then I should see the body with email as "nessrine.aloulou@beprime.com"
+
   Scenario: Verify DELETE operation after POST
     Given I ensure to Perform POST operation with body as
-      |id | firstName | lastName          |email | cin | grade | phone | gotLeaveDays | recruitDay |
-      |12tt | amin  | dammak            | amin.dammak@beprime.com | 11112335| developer | 50222355 | 9 |2022-09-12 |
+      | id   | firstName | lastName | email                   | cin      | grade     | phone    | gotLeaveDays | recruitDay |
+      | 12tt | amin      | dammak   | amin.dammak@beprime.com | 11112335 | developer | 50222355 | 9            | 2022-09-12 |
     Then I should be able to see my newly created employee to ensure my post operation for id "12tt"
 
     And  I Perform DELETE operation for "/delete/{id}"
-      | id |
-      | 12tt      |
+      | id   |
+      | 12tt |
     And I perform GET operation with path parameter for "/find/{id}"
-      | id |
-      | 12tt     |
+      | id   |
+      | 12tt |
     And I should not see the body with email as "amin.dammak@beprime.com"

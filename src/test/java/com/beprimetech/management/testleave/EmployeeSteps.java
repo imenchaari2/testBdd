@@ -173,5 +173,28 @@ public class EmployeeSteps {
     }
 
 
+    @And("^I Perform PUT operation for \"([^\"]*)\"$")
+    public void iPerformPUTOperationFor(String url, DataTable table) throws Throwable {
+        var data = table.asLists();
 
+        Map<String, String> body = new HashMap<>();
+        body.put("id", data.get(1).get(0));
+        body.put("firstName", data.get(1).get(1));
+        body.put("lastName", data.get(1).get(2));
+        body.put("email", data.get(1).get(3));
+        body.put("cin", data.get(1).get(4));
+        body.put("grade", data.get(1).get(5));
+        body.put("phone", data.get(1).get(6));
+        body.put("gotLeaveDays", data.get(1).get(7));
+        body.put("recruitDay", (data.get(1).get(8)));
+
+        //Perform post operation
+        RestAssuredExtension.PUTOpsWithBody(url, body);
+
+    }
+
+    @Then("^I should see the body with email as \"([^\"]*)\"$")
+    public void iShouldSeeTheBodyWithEmailAs(String email) throws Throwable {
+        assertThat(response.getBody().jsonPath().get("email"), equalTo(email));
+    }
 }

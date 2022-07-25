@@ -1,20 +1,19 @@
 package com.beprimetech.management.testleave;
 
-import com.beprimetech.management.testleave.models.Employe;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
-import io.restassured.http.ContentType;
 import io.restassured.http.Header;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseOptions;
 import io.restassured.specification.RequestSpecification;
 
-import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class RestAssuredExtension {
 
@@ -44,6 +43,7 @@ public class RestAssuredExtension {
 
     public static ResponseOptions<Response> GetOps(String url) {
         System.out.println("request get ========>" + Request.get(url).getBody().print());
+        assertThat(Request.get(url).getStatusCode(), equalTo(200));
         return Request.get(url);
 
     }
@@ -59,9 +59,10 @@ public class RestAssuredExtension {
         return null;
     }
 
-    public static ResponseOptions<Response> PUTOpsWithBodyAndPathParams(String url, Map<String,String> body, Map<String,String> pathParams) {
-        Request.pathParams(pathParams);
+    public static ResponseOptions<Response> PUTOpsWithBody(String url, Map<String,String> body) {
         Request.body(body);
+        System.out.println("request put ========>" + Request.put(url).getStatusCode());
+        System.out.println("request put ========>" + Request.put(url).getBody().print());
         return Request.put(url);
     }
     public static ResponseOptions<Response> PostOpsWithBodyAndPathParams(String url, Map<String, String> pathParams, Map<String, String> body)  {
@@ -69,17 +70,18 @@ public class RestAssuredExtension {
         Request.body(body);
         return Request.post(url);
     }
-    public static ResponseOptions<Response> DeleteOpsWithPathParams(String url,Map<String, String> pathParams)  {
+    public static void DeleteOpsWithPathParams(String url, Map<String, String> pathParams)  {
         Request.pathParams(pathParams);
         System.out.println("request delete ========>" + Request.delete(url).getStatusCode());
-        return Request.delete(url);
+//        assertThat(Request.delete(url).getStatusCode(), equalTo(200));
+
+        Request.delete(url);
 
     }
     public static ResponseOptions<Response> GetWithPathParams(String url,Map<String, String> pathParams)  {
         Request.pathParams(pathParams);
         System.out.println("request get ========>" + Request.get(url).getBody().print());
         System.out.println("request get ========>" + Request.get(url).getStatusCode());
-
         return Request.get(url);
     }
 
@@ -92,6 +94,7 @@ public class RestAssuredExtension {
     public static void PostOpsWithBody(String url, Map<String, String> body)  {
         Request.body(body);
         Request.post(url);
+        assertThat(Request.post(url).getStatusCode(), equalTo(201));
         System.out.println("request post ========>" + Request.post(url).getBody().print());
         System.out.println("request post ========>" + Request.post(url).getStatusCode());
 
