@@ -42,7 +42,6 @@ public class EmployeeSteps {
     private Response response;
     private final RestTemplate restTemplate = new RestTemplate();
     private final String postUrl = "http://localhost";
-    private String employeeId = "";
 
 
     public static ResponseSpecification status200Ok() {
@@ -57,41 +56,41 @@ public class EmployeeSteps {
         return LocalDate.parse(dateString, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
     }
 
-    @Given("I can create a new employee")
-    public void i_can_create_a_new_post() {
-        String urlFind = postUrl + ":" + port + "/api/employee/all";
-        List allEmployee = restTemplate.getForObject(urlFind, List.class);
-        log.info(allEmployee);
-
-    }
-
-    @And("^I sending post to be created with post id (.*), firstName (.*), lastName (.*), email (.*), cin (.*), grade (.*), phone (.*), gotLeaveDays (.*) and recruitDay (.*)$")
-    public void i_sending_post(String id, String firstName, String lastName, String email, int cin, String grade, String phone, int gotLeaveDays, String recruitDay) {
-
-        Employe newEmployee = new Employe();
-        newEmployee.setId(id);
-        newEmployee.setFirstName(firstName);
-        newEmployee.setLastName(lastName);
-        newEmployee.setEmail(email);
-//        newEmployee.setCin(cin);
-        newEmployee.setPhone(phone);
-        newEmployee.setGrade(grade);
-//        newEmployee.setGotLeaveDays(gotLeaveDays);
-//        newEmployee.setRecruitDay(mydate(recruitDay));
-        Employe employe = restTemplate.postForObject(postUrl + ":" + port + "/api/employee/add", newEmployee, Employe.class);
-        assert employe != null;
-        employeeId = employe.getId();
-        log.info(employe);
-        assertNotNull(employe);
-    }
-
-    @Then("I should be able to see my newly created employee")
-    public void i_should_see_my_newly_created_post() {
-        String url = postUrl + ":" + port + "/api/employee/find/" + employeeId;
-        Employe employee = restTemplate.getForObject(url, Employe.class);
-        log.info(employee);
-        assertNotNull(employee);
-    }
+//    @Given("I can create a new employee")
+//    public void i_can_create_a_new_post() {
+//        String urlFind = postUrl + ":" + port + "/api/employee/all";
+//        List allEmployee = restTemplate.getForObject(urlFind, List.class);
+//        log.info(allEmployee);
+//
+//    }
+//
+//    @And("^I sending post to be created with post id (.*), firstName (.*), lastName (.*), email (.*), cin (.*), grade (.*), phone (.*), gotLeaveDays (.*) and recruitDay (.*)$")
+//    public void i_sending_post(String id, String firstName, String lastName, String email, int cin, String grade, String phone, int gotLeaveDays, String recruitDay) {
+//
+//        Employe newEmployee = new Employe();
+//        newEmployee.setId(id);
+//        newEmployee.setFirstName(firstName);
+//        newEmployee.setLastName(lastName);
+//        newEmployee.setEmail(email);
+////        newEmployee.setCin(cin);
+//        newEmployee.setPhone(phone);
+//        newEmployee.setGrade(grade);
+////        newEmployee.setGotLeaveDays(gotLeaveDays);
+////        newEmployee.setRecruitDay(mydate(recruitDay));
+//        Employe employe = restTemplate.postForObject(postUrl + ":" + port + "/api/employee/add", newEmployee, Employe.class);
+//        assert employe != null;
+//        employeeId = employe.getId();
+//        log.info(employe);
+//        assertNotNull(employe);
+//    }
+//
+//    @Then("I should be able to see my newly created employee")
+//    public void i_should_see_my_newly_created_post() {
+//        String url = postUrl + ":" + port + "/api/employee/find/" + employeeId;
+//        Employe employee = restTemplate.getForObject(url, Employe.class);
+//        log.info(employee);
+//        assertNotNull(employee);
+//    }
 
 // get step def req spec
 
@@ -127,7 +126,6 @@ public class EmployeeSteps {
     @Given("^I ensure to Perform POST operation with body as$")
     public void iEnsureToPerformPOSTOperationForWithBodyAs(DataTable table) throws Throwable {
         var data = table.asLists();
-
         Map<String, String> body = new HashMap<>();
         body.put("id", data.get(1).get(0));
         body.put("firstName", data.get(1).get(1));
@@ -137,7 +135,7 @@ public class EmployeeSteps {
         body.put("grade", data.get(1).get(5));
         body.put("phone", data.get(1).get(6));
         body.put("gotLeaveDays", data.get(1).get(7));
-        body.put("recruitDay", data.get(1).get(8));
+        body.put("recruitDay", (data.get(1).get(8)));
 
         //Perform post operation
         RestAssuredExtension.PostOpsWithBody(postUrl + ":" + port + "/api/employee/add", body);
@@ -164,10 +162,8 @@ public class EmployeeSteps {
     @And("I perform GET operation with path parameter for {string}")
     public void iPerformGETOperationWithPathParameterFor(String url, DataTable table) throws Throwable {
         var data = table.asLists();
-
         Map<String, String> pathParams = new HashMap<>();
         pathParams.put("id", data.get(1).get(0));
-
         response = (Response) RestAssuredExtension.GetWithPathParams(url, pathParams);
     }
 

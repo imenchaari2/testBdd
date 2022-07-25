@@ -37,15 +37,13 @@ public class RestAssuredExtension {
         Request.pathParams(pathParams);
         try {
             Request.get(new URI(url));
-            System.out.println("request getById ========>" + Request.get(url).getBody().print());
-
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
     }
 
     public static ResponseOptions<Response> GetOps(String url) {
-        System.out.println("request getall ========>" + Request.get(url).getBody().print());
+        System.out.println("request get ========>" + Request.get(url).getBody().print());
         return Request.get(url);
 
     }
