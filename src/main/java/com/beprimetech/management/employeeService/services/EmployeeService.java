@@ -1,7 +1,7 @@
-package com.beprimetech.management.testleave.services;
+package com.beprimetech.management.employeeService.services;
 
-import com.beprimetech.management.testleave.models.Employee;
-import com.beprimetech.management.testleave.repository.EmployeeRepository;
+import com.beprimetech.management.employeeService.models.Employee;
+import com.beprimetech.management.employeeService.repository.EmployeeRepository;
 import org.assertj.core.util.Lists;
 import org.springframework.stereotype.Service;
 
@@ -26,14 +26,17 @@ public class EmployeeService {
     }
 
     public List<Employee> findAllEmployees() {
-        return Lists.newArrayList();
+        List<Employee> employees = Lists.newArrayList();
+        employees.addAll(empRepository.findAll());
+
+        return employees;
     }
-//
-//    public List<Employee> findAllArchivedEmployees() {
-//        List<Employee> employees = Lists.newArrayList();
-//        employees.addAll(empRepository.findEmployeesByIsArchived(true));
-//        return employees;
-//    }
+
+    public List<Employee> findAllArchivedEmployees() {
+        List<Employee> employees = Lists.newArrayList();
+        employees.addAll(empRepository.findEmployeesByIsArchived(true));
+        return employees;
+    }
 
     public Employee updateEmployee(Employee employee) {
         Employee employee1 = this.findEmployeeById(employee.getId());
@@ -50,18 +53,18 @@ public class EmployeeService {
         Employee employee = this.findEmployeeById(id);
         empRepository.delete(employee);
     }
-//
-//    public void archiveEmployee(String id) {
-//        Employee employee = this.findEmployeeById(id);
-//        employee.setIsArchived(true);
-//        empRepository.save(employee);
-//    }
-//
-//    public void restoreEmployee(String id) {
-//        Employee employee = this.findEmployeeById(id);
-//        employee.setIsArchived(false);
-//        empRepository.save(employee);
-//    }
+
+    public void archiveEmployee(String id) {
+        Employee employee = this.findEmployeeById(id);
+        employee.setIsArchived(true);
+        empRepository.save(employee);
+    }
+
+    public void restoreEmployee(String id) {
+        Employee employee = this.findEmployeeById(id);
+        employee.setIsArchived(false);
+        empRepository.save(employee);
+    }
 
 
 }

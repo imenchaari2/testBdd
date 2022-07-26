@@ -1,11 +1,10 @@
-package com.beprimetech.management.testleave.models;
+package com.beprimetech.management.employeeService.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Transient;
 
 import java.time.LocalDate;
 
@@ -28,7 +27,6 @@ public class Information {
     private int gotLeaveDays;
     @JsonFormat(locale = "MM/DD/YYYY")
     private LocalDate archivedDay;
-    @Transient
     private double sold;
 
 }

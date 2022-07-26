@@ -1,7 +1,7 @@
-package com.beprimetech.management.testleave.controllers;
+package com.beprimetech.management.employeeService.controllers;
 
-import com.beprimetech.management.testleave.models.Employee;
-import com.beprimetech.management.testleave.services.EmployeeService;
+import com.beprimetech.management.employeeService.models.Employee;
+import com.beprimetech.management.employeeService.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,12 +26,12 @@ public class EmployeeController {
         List<Employee> employees = empService.findAllEmployees();
         return new ResponseEntity<>(employees, HttpStatus.OK);
     }
-//
-//    @GetMapping("/archived")
-//    public ResponseEntity<List<Employee>> getAllArchivedEmployees() {
-//        List<Employee> employees = empService.findAllArchivedEmployees();
-//        return new ResponseEntity<>(employees, HttpStatus.OK);
-//    }
+
+    @GetMapping("/archived")
+    public ResponseEntity<List<Employee>> getAllArchivedEmployees() {
+        List<Employee> employees = empService.findAllArchivedEmployees();
+        return new ResponseEntity<>(employees, HttpStatus.OK);
+    }
 
     @GetMapping("/find/{id}")
     public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") String id) {
@@ -54,18 +54,18 @@ public class EmployeeController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteEmployee(@PathVariable("id") String id) {
         empService.deleteEmployee(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/archive/{id}")
+    public ResponseEntity<?> archiveEmployee(@PathVariable("id") String id) {
+        empService.archiveEmployee(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-//
-//    @DeleteMapping("/archive/{id}")
-//    public ResponseEntity<?> archiveEmployee(@PathVariable("id") String id) {
-//        empService.archiveEmployee(id);
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
-//
-//    @DeleteMapping("/restore/{id}")
-//    public ResponseEntity<?> restoreEmployee(@PathVariable("id") String id) {
-//        empService.restoreEmployee(id);
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
+
+    @DeleteMapping("/restore/{id}")
+    public ResponseEntity<?> restoreEmployee(@PathVariable("id") String id) {
+        empService.restoreEmployee(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

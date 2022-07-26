@@ -1,4 +1,4 @@
-package com.beprimetech.management.testleave.models;
+package com.beprimetech.management.employeeService.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
