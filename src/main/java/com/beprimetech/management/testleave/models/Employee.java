@@ -19,4 +19,5 @@ public class Employee {
     @Id
     private String id;
     Information information ;
+    private Boolean isArchived ;
 }
