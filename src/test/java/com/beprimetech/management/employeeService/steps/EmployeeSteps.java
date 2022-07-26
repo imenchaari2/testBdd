@@ -1,32 +1,19 @@
 package com.beprimetech.management.employeeService.steps;
-
-import com.beprimetech.management.employeeService.models.Employee;
-import com.beprimetech.management.employeeService.services.UserNotFoundException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import lombok.extern.log4j.Log4j2;
-import org.hamcrest.core.IsNot;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.RestTemplate;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
-
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThrows;
 
 @Log4j2
 @RunWith(SpringRunner.class)
