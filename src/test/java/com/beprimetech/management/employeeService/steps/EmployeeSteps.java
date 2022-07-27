@@ -1,4 +1,5 @@
 package com.beprimetech.management.employeeService.steps;
+
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -10,9 +11,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
 import static org.junit.Assert.assertNotNull;
 
 @Log4j2
@@ -29,7 +32,7 @@ public class EmployeeSteps {
 
     @Given("I perform GET operation for {string}")
     public void iPerformGETOperationFor(String url) throws Throwable {
-        response = restTemplate.getForEntity(uri+url, String.class);
+        response = restTemplate.getForEntity(uri + url, String.class);
     }
 
     @Then("The employees are listed")
@@ -63,39 +66,57 @@ public class EmployeeSteps {
         body.put("information", informationBody);
         informationBody.put("address", addressBody);
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Map<String, Object>> request = new HttpEntity<>(body,headers);
-        response = restTemplate.postForEntity(uri+"/add",request, String.class);
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
+        response = restTemplate.postForEntity(uri + "/add", request, String.class);
+        log.info("eeeeeeeee" + response.getBody());
         Assertions.assertEquals(response.getStatusCode(), HttpStatus.CREATED);
 
     }
+
     @Then("I should be able to see my newly created employee to ensure my post operation for id {string}")
     public void i_should_see_my_newly_created_employee(String employeeId) {
-        response = restTemplate.getForEntity(uri+"/find/"+employeeId, String.class);
-        log.info(response);
-        assertNotNull(response);
-        Assertions.assertEquals(response.getStatusCode(), HttpStatus.OK);
-
+        response = restTemplate.getForEntity(uri + "/all", String.class);
+        if (Objects.requireNonNull(response.getBody()).contains(employeeId)) {
+            response = restTemplate.getForEntity(uri + "/find/" + employeeId, String.class);
+            log.info(response);
+            assertNotNull(response);
+            Assertions.assertEquals(response.getStatusCode(), HttpStatus.OK);
+        }
 
     }
 
     @And("I Perform DELETE operation for {string}")
     public void iPerformDELETEOperationFor(String url, DataTable table) throws Throwable {
         var data = table.asLists();
-        String entityUrl = uri + url +data.get(1).get(0) ;
-        restTemplate.delete(entityUrl);
+        String entityUrl = uri + url + data.get(1).get(0);
+        response = restTemplate.getForEntity(uri + "/all", String.class);
+        if (Objects.requireNonNull(response.getBody()).contains(data.get(1).get(0))) {
+            restTemplate.delete(entityUrl);
+        } else {
+            log.info("user by id " + data.get(1).get(0) + " not found ");
+        }
 
     }
 
     @And("I perform GET operation after DELETE")
     public void iPerformGETOperationAfterDELETE(DataTable table) {
         var data = table.asLists();
-        response = restTemplate.getForEntity(uri+"/all", String.class);
+        response = restTemplate.getForEntity(uri + "/all", String.class);
         assert (!Objects.requireNonNull(response.getBody()).contains(data.get(1).get(0)));
 
     }
-    @Then("^I should not see the body with email as \"([^\"]*)\"$")
-    public void iShouldNotSeeTheBodyWithTitleAs(String email) throws Throwable {
-        assert(!Objects.requireNonNull(response.getBody()).contains(email));
+
+    @Then("^if the Post operation is done then I should not see the body with email as \"([^\"]*)\"$")
+    public void iShouldNotSeeTheBodyWithEmailAs(String email, DataTable table) throws Throwable {
+        var data = table.asLists();
+        if (!Objects.requireNonNull(response.getBody()).contains(data.get(1).get(0))){
+            assert (Objects.requireNonNull(response.getBody()).contains(email));
+
+        }
+        else{
+            assert (!Objects.requireNonNull(response.getBody()).contains(email));
+
+        }
     }
 
 
@@ -123,25 +144,26 @@ public class EmployeeSteps {
         body.put("information", informationBody);
         informationBody.put("address", addressBody);
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Map<String, Object>> request = new HttpEntity<>(body,headers);
-        String resourceUrl =uri+url;
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
+        String resourceUrl = uri + url;
         restTemplate.exchange(resourceUrl, HttpMethod.PUT, request, Void.class);
     }
+
     @And("I perform GET operation after PUT with path parameter for {string}")
     public void iPerformGETOperationWithPathParameterFor(String url, DataTable table) throws Throwable {
         var data = table.asLists();
-        String entityUrl = uri + url + data.get(1).get(0) ;
+        String entityUrl = uri + url + data.get(1).get(0);
         response = restTemplate.getForEntity(entityUrl, String.class);
         log.info(response.getBody());
         Assertions.assertEquals(response.getStatusCode(), HttpStatus.OK);
 
 
     }
-    @Then("^I should see the body with email as \"([^\"]*)\"$")
-    public void iShouldSeeTheBodyWithEmailAs(String email) throws Throwable {
 
-        assert(Objects.requireNonNull(response.getBody()).contains(email));
+    @Then("I should see the body with email as {string} and firstName as {string}")
+    public void iShouldSeeTheBodyWithEmailAsAndFirstNameAs(String email, String firstName) {
+        assert (Objects.requireNonNull(response.getBody()).contains(email));
+        assert (Objects.requireNonNull(response.getBody()).contains(firstName));
+
     }
-
-
 }

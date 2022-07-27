@@ -12,7 +12,9 @@ import java.util.Optional;
 @Repository
 public interface EmployeeRepository extends MongoRepository<Employee, String> {
     Optional<Employee> findEmployeById(String id);
-    /*List<Employe> findEmployeByEmail(String email);*/
+
+    List<Employee> findEmployeeByInformation_Email(String email);
+
     List<Employee> findEmployeesByIsArchived(boolean isArchived);
 
 }

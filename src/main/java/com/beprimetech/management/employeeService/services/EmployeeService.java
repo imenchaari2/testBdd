@@ -18,10 +18,10 @@ public class EmployeeService {
 
     // employee crud
     public Employee addEmployee(Employee employee) {
-        /*List<Employe> employeeList = empRepository.findEmployeByEmail(employee.getEmail());
-        if (employeeList.isEmpty()) {*/
+        List<Employee> employeeList = empRepository.findEmployeeByInformation_Email(employee.getInformation().getEmail());
+        if (employeeList.isEmpty()) {
             return empRepository.save(employee);
-       /* } else return null;*/
+        } else return null;
 
     }
 
@@ -41,7 +41,11 @@ public class EmployeeService {
     public Employee updateEmployee(Employee employee) {
         Employee employee1 = this.findEmployeeById(employee.getId());
         employee1 = employee;
-        return empRepository.save(employee1);
+        if (empRepository.findEmployeeByInformation_Email(employee1.getInformation().getEmail()).size()==1) {
+            return empRepository.save(employee1);
+        } else {
+            return null;
+        }
     }
 
     public Employee findEmployeeById(String id) {
