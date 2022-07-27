@@ -68,7 +68,6 @@ public class EmployeeSteps {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
         response = restTemplate.postForEntity(uri + "/add", request, String.class);
-        log.info("eeeeeeeee" + response.getBody());
         Assertions.assertEquals(response.getStatusCode(), HttpStatus.CREATED);
 
     }
@@ -109,9 +108,8 @@ public class EmployeeSteps {
     @Then("^if the Post operation is done then I should not see the body with email as \"([^\"]*)\"$")
     public void iShouldNotSeeTheBodyWithEmailAs(String email, DataTable table) throws Throwable {
         var data = table.asLists();
-        if (!Objects.requireNonNull(response.getBody()).contains(data.get(1).get(0))){
+        if (!Objects.requireNonNull(response.getBody()).contains(data.get(1).get(0))&&(response.getBody()).contains(email)){
             assert (Objects.requireNonNull(response.getBody()).contains(email));
-
         }
         else{
             assert (!Objects.requireNonNull(response.getBody()).contains(email));
