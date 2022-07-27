@@ -27,7 +27,7 @@ public class EmployeeService {
 
     public List<Employee> findAllEmployees() {
         List<Employee> employees = Lists.newArrayList();
-        employees.addAll(empRepository.findAll());
+        employees.addAll(empRepository.findEmployeesByIsArchived(false));
 
         return employees;
     }

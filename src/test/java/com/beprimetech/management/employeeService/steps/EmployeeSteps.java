@@ -108,10 +108,9 @@ public class EmployeeSteps {
     @Then("^if the Post operation is done then I should not see the body with email as \"([^\"]*)\"$")
     public void iShouldNotSeeTheBodyWithEmailAs(String email, DataTable table) throws Throwable {
         var data = table.asLists();
-        if (!Objects.requireNonNull(response.getBody()).contains(data.get(1).get(0))&&(response.getBody()).contains(email)){
+        if (!Objects.requireNonNull(response.getBody()).contains(data.get(1).get(0)) && (response.getBody()).contains(email)) {
             assert (Objects.requireNonNull(response.getBody()).contains(email));
-        }
-        else{
+        } else {
             assert (!Objects.requireNonNull(response.getBody()).contains(email));
 
         }
@@ -162,6 +161,35 @@ public class EmployeeSteps {
     public void iShouldSeeTheBodyWithEmailAsAndFirstNameAs(String email, String firstName) {
         assert (Objects.requireNonNull(response.getBody()).contains(email));
         assert (Objects.requireNonNull(response.getBody()).contains(firstName));
+
+    }
+
+    @Given("I ensure to Perform archive operation for {string}")
+    public void iEnsureToPerformArchiveOperationFor(String url, DataTable dataTable) {
+        var data = dataTable.asLists();
+        String entityUrl = uri + url + data.get(1).get(0);
+        restTemplate.delete(entityUrl);
+    }
+
+    @Then("I should not see the archived employee after GET all operation")
+    public void iShouldNotSeeTheArchivedEmployeeAfterGETAllOperation(DataTable dataTable) {
+        var data = dataTable.asLists();
+        response = restTemplate.getForEntity(uri + "/all", String.class);
+        assert (!Objects.requireNonNull(response.getBody()).contains(data.get(1).get(0)));
+    }
+
+    @And("I Perform restore operation for {string}")
+    public void iPerformRestoreOperationFor(String url , DataTable dataTable) {
+        var data = dataTable.asLists();
+        String entityUrl = uri + url + data.get(1).get(0);
+        restTemplate.delete(entityUrl);
+    }
+
+    @And("I should see the restored employee after GET all operation")
+    public void iShouldSeeTheRestoredEmployeeAfterGETAllOperation(DataTable dataTable) {
+        var data = dataTable.asLists();
+        response = restTemplate.getForEntity(uri + "/all", String.class);
+        assert (Objects.requireNonNull(response.getBody()).contains(data.get(1).get(0)));
 
     }
 }
