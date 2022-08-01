@@ -179,7 +179,7 @@ public class EmployeeSteps {
     }
 
     @And("I Perform restore operation for {string}")
-    public void iPerformRestoreOperationFor(String url , DataTable dataTable) {
+    public void iPerformRestoreOperationFor(String url, DataTable dataTable) {
         var data = dataTable.asLists();
         String entityUrl = uri + url + data.get(1).get(0);
         restTemplate.delete(entityUrl);

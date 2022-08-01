@@ -41,7 +41,7 @@ public class EmployeeService {
     public Employee updateEmployee(Employee employee) {
         Employee employee1 = this.findEmployeeById(employee.getId());
         employee1 = employee;
-        if (empRepository.findEmployeeByInformation_Email(employee1.getInformation().getEmail()).size()==1) {
+        if (empRepository.findEmployeeByInformation_Email(employee1.getInformation().getEmail()).size() == 1) {
             return empRepository.save(employee1);
         } else {
             return null;

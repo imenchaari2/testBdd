@@ -15,6 +15,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Employee {
     @Id
     private String id;
-    Information information ;
-    private Boolean isArchived ;
+    Information information;
+    private Boolean isArchived;
 }
